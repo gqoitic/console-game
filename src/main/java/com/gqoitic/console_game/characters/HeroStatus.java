@@ -11,6 +11,14 @@ public enum HeroStatus {
 	private String status;
 	
 	HeroStatus(String status) {
+		this.setStatus(status);
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
 		this.status = status;
 	}
 }

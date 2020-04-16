@@ -6,7 +6,7 @@ import java.util.List;
 import com.gqoitic.console_game.characters.Hero;
 
 public class Game {
-	private static int turn = 0; // change to 1 ?
+	private static int turn = 0;
 	
 	static void increaseTurn() { turn++; }
 	
@@ -15,6 +15,8 @@ public class Game {
 	void gameProcess() {
 		boolean process = true;
 		
+		// need to fill heroesInGame list here
+		
 		while(process) {
 			for(Hero movingHero : heroesInGame) {
 				if(heroesInGame.indexOf(movingHero) == 0) increaseTurn();
@@ -22,6 +24,15 @@ public class Game {
 				// ... (checking if player or bot etc...)
 			}
 		}
+	}
+	
+	void beginningOfTheGame() {
+		// intro
+		
+		// class selection
+		// team selection / or random
+		// creating other 9 heroes
+		// ...
 	}
 
 }
