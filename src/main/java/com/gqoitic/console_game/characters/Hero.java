@@ -3,8 +3,8 @@ package com.gqoitic.console_game.characters;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hero {
-	public static List<Hero> listOfHeroes = new ArrayList<>();
+public abstract class Hero {
+	public static List<Character> listOfHeroes = new ArrayList<>();
 	
 	private String name;
 	private int health;
@@ -33,6 +33,9 @@ public class Hero {
 		setAlive(true);
 		setHeroStatus(HeroStatus.NORMAL);
 	}
+	
+	
+	abstract void ability();
 	
 	/****************************************************************
 	 * 

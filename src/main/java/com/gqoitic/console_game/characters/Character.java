@@ -1,20 +1,20 @@
 package com.gqoitic.console_game.characters;
 
-public class PlayableCharacter extends Hero {
+public class Character extends Hero {
 
-	private int health;
-	private int mana;
-	private int damage;
+	private static int health;
+	private static int mana;
+	private static int damage;
 	
 	private Team team;
 	private HeroClass heroClass;
 	
-	public PlayableCharacter(Team team, String name, int health, int mana, int damage, boolean player) {
+	public Character(Team team, String name, int health, int mana, int damage, boolean player) {
 		super(name, health, mana, damage, player);
 		this.setTeam(team);
 	}
 	
-	public PlayableCharacter create(Team team, String name, HeroClass heroClass, boolean player) {
+	public static Character create(Team team, String name, HeroClass heroClass, boolean player) {
 		
 		if(heroClass.equals(HeroClass.TANK)) {
 			health = 1000;
@@ -37,7 +37,16 @@ public class PlayableCharacter extends Hero {
 			damage = 100;
 		}
 		
-		return new PlayableCharacter(team, name, health, mana, damage, player);
+		Character ch = new Character(team, name, health, mana, damage, player);
+		Hero.listOfHeroes.add(ch);
+		
+		return ch;
+	}
+	
+	void ability() {
+		// TODO
+		// checking hero class
+		// ...
 	}
 
 	public HeroClass getHeroClass() {
