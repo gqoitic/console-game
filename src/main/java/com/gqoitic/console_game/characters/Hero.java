@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class Hero {
 	public static List<Character> listOfHeroes = new ArrayList<>();
 	
-	private String name;
+	protected String name;
 	private int health;
 	private int mana;
 	private int damage;

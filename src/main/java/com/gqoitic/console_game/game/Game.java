@@ -25,10 +25,11 @@ public class Game {
 	private int choice;
 	private HeroClass heroClass;
 	
+	private static int blueTracker = 5;
+	private static int redTracker = 5;
+	
 	void gameProcess() {
 		boolean process = true;
-		
-		// need to fill heroesInGame list here
 		
 		while(process) {
 			for(Hero movingHero : Hero.listOfHeroes) {
@@ -39,7 +40,7 @@ public class Game {
 		}
 	}
 	
-	void beginningOfTheGame() {
+	public void beginningOfTheGame() {
 		// intro
 		
 		name      = choosingName();
@@ -48,9 +49,10 @@ public class Game {
 		
 		Character player = Character.create(team, name, heroClass, true);
 		
+		// creating other 9 players (bots)
+		createBots();
 		
-		// creating other 9 heroes (method)
-		// ...
+		printAllCharacters();
 	}
 	
 	private String choosingName() {
@@ -64,17 +66,17 @@ public class Game {
 	}
 	
 	private Team choosingTeam() {
-		System.out.print("Choose your team:%n"
-				+ "[1]Red%n"
-				+ "[2]Blue%n"
-				+ "[3]Random%n%n>>");
+		System.out.print("Choose your team:\n"
+				+ "[1]Red\n"
+				+ "[2]Blue\n"
+				+ "[3]Random\n\n>>");
 		
 		choice = scanner.nextInt();
 		
 		if(choice == 3) {
 			randomChoice = random.nextInt(10);
 			
-			choice = randomChoice > 5 ? 1 : 2;
+			choice = randomChoice > 4 ? 1 : 2;
 		}
 		
 		switch(choice) {
@@ -86,15 +88,18 @@ public class Game {
 			break;
 		}
 		
+		if (team == Team.BLUE) blueTracker--;
+		else if (team == Team.RED) redTracker--;
+		
 		return team;
 	}
 	
 	private HeroClass choosingHeroClass() {
-		System.out.print("Choose your hero:%n"
-				+ "[1]Tank%n"
-				+ "[2]Healer%n"
-				+ "[3]Killer%n"
-				+ "[4]Mage%n%n>>");
+		System.out.print("Choose your hero:\n"
+				+ "[1]Tank\n"
+				+ "[2]Healer\n"
+				+ "[3]Killer\n"
+				+ "[4]Mage\n\n>>");
 		
 		choice = scanner.nextInt();
 		
@@ -114,6 +119,53 @@ public class Game {
 		}
 		
 		return heroClass;
+	}
+	
+	private HeroClass getRandomHeroClass() {
+		HeroClass randomHeroClass = null;
+		
+		int randInt = random.nextInt(4);
+		
+		switch(randInt) {
+		case 0:
+			randomHeroClass = HeroClass.TANK;
+			break;
+		case 1:
+			randomHeroClass = HeroClass.HEALER;
+			break;
+		case 2:
+			randomHeroClass = HeroClass.KILLER;
+			break;
+		case 3:
+			randomHeroClass = HeroClass.MAGE;
+			break;
+		}
+		
+		return randomHeroClass;
+	}
+	
+	private void createBots() {
+		HeroClass heroClass;
+		
+		for (; blueTracker > 0; blueTracker--) {
+			Character.create(Team.BLUE, "[BLUE]BOT#" + blueTracker, getRandomHeroClass(), false);
+		}
+		
+		for (; redTracker > 0; redTracker--) {
+			Character.create(Team.RED, "[RED]BOT#" + redTracker, getRandomHeroClass(), false);
+		}
+	}
+	
+	private void printAllCharacters() {
+		for(Character character : Hero.listOfHeroes) {
+//			System.out.printf("(%d) %s [%s]", character.getHealth(),
+//											  character.getName(),
+//											  character.getHeroClass()
+//											           .getHeroClass());
+			// NullPointerException
+			System.out.println(character.getHeroClass().getHeroClass()); 
+			// character.getHeroClass() = null
+		}
 	}
 
 }
