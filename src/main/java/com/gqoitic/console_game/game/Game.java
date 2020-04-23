@@ -161,9 +161,6 @@ public class Game {
 			System.out.printf("(%dhp) %s [%s]%n", character.getHealth(),
 											  character.getName(),
 											  character.getHeroClass());
-			// NullPointerException
-//			System.out.println(character.getHeroClass());
-			// character.getHeroClass() = null
 		}
 	}
 
