@@ -9,9 +9,10 @@ public class Character extends Hero {
 	private Team team;
 	private HeroClass heroClass;
 	
-	public Character(Team team, String name, int health, int mana, int damage, boolean player) {
+	public Character(Team team, String name, HeroClass heroClass, int health, int mana, int damage, boolean player) {
 		super(name, health, mana, damage, player);
 		this.setTeam(team);
+		this.setHeroClass(heroClass);
 	}
 	
 	public static Character create(Team team, String name, HeroClass heroClass, boolean player) {
@@ -37,7 +38,7 @@ public class Character extends Hero {
 			damage = 100;
 		}
 		
-		Character ch = new Character(team, name, health, mana, damage, player);
+		Character ch = new Character(team, name, heroClass, health, mana, damage, player);
 		Hero.listOfHeroes.add(ch);
 		
 		return ch;
