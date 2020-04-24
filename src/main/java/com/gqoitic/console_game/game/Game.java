@@ -10,6 +10,7 @@ import com.gqoitic.console_game.characters.Hero;
 import com.gqoitic.console_game.characters.HeroClass;
 import com.gqoitic.console_game.characters.Team;
 import com.gqoitic.console_game.characters.Character;
+import com.sun.prism.paint.Color;
 
 public class Game {
 	private Scanner scanner = new Scanner(System.in);
@@ -28,6 +29,10 @@ public class Game {
 	private static int blueTracker = 5;
 	private static int redTracker = 5;
 	
+	private static int id = 1;
+	
+	Character player;
+	
 	void gameProcess() {
 		boolean process = true;
 		
@@ -42,17 +47,28 @@ public class Game {
 	
 	public void beginningOfTheGame() {
 		// intro
-		
+
 		name      = choosingName();
 		team      = choosingTeam();
 		heroClass = choosingHeroClass();
 		
-		Character player = Character.create(team, name, heroClass, true);
+		player = Character.create(id++, team, name, heroClass, true);
 		
+		// adds [team] to the beginning of name
+		changePlayerName();
+
 		// creating other 9 players (bots)
 		createBots();
 		
 		printAllCharacters();
+	}
+	
+	private void changePlayerName() {
+		if(player.getTeam() == Team.RED) {
+			player.setName("[RED]" + player.getName());
+		} else if(player.getTeam() == Team.BLUE) {
+			player.setName("[BLUE]" + player.getName());
+		}
 	}
 	
 	private String choosingName() {
@@ -148,20 +164,36 @@ public class Game {
 		HeroClass heroClass;
 		
 		for (; blueTracker > 0; blueTracker--) {
-			Character.create(Team.BLUE, "[BLUE]BOT#" + blueTracker, getRandomHeroClass(), false);
+			Character.create(id++, Team.BLUE, "[BLUE]BOT#" + blueTracker, getRandomHeroClass(), false);
 		}
 		
 		for (; redTracker > 0; redTracker--) {
-			Character.create(Team.RED, "[RED]BOT#" + redTracker, getRandomHeroClass(), false);
+			Character.create(id++, Team.RED, "[RED]BOT#" + redTracker, getRandomHeroClass(), false);
 		}
 	}
 	
 	private void printAllCharacters() {
 		for(Character character : Hero.listOfHeroes) {
-			System.out.printf("(%dhp) %s [%s]%n", character.getHealth(),
+			System.out.printf("%d) (%dhp) %s [%s]%n", character.getId(),
+											  character.getHealth(),
 											  character.getName(),
 											  character.getHeroClass());
 		}
 	}
+	
+	/*******************************************************************************************************/
+	
+	private Character getRandomCharacter() {
+		int randomNumber = random.nextInt(Hero.listOfHeroes.size());
+		return Hero.listOfHeroes.get(randomNumber);
+	}
 
+	private void atack(Character attacker, Character attacked) {
+		attacked.setHealth(attacked.getHealth() - attacked.getDamage());
+		
+		if (attacked.getHealth() <= 0) {
+			attacked.setAlive(false);
+		}
+	}
+	
 }

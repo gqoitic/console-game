@@ -2,6 +2,8 @@ package com.gqoitic.console_game.characters;
 
 public class Character extends Hero {
 
+	private int id;
+	
 	private static int health;
 	private static int mana;
 	private static int damage;
@@ -9,13 +11,14 @@ public class Character extends Hero {
 	private Team team;
 	private HeroClass heroClass;
 	
-	public Character(Team team, String name, HeroClass heroClass, int health, int mana, int damage, boolean player) {
+	public Character(int id, Team team, String name, HeroClass heroClass, int health, int mana, int damage, boolean player) {
 		super(name, health, mana, damage, player);
 		this.setTeam(team);
 		this.setHeroClass(heroClass);
+		this.setId(id);
 	}
 	
-	public static Character create(Team team, String name, HeroClass heroClass, boolean player) {
+	public static Character create(int id, Team team, String name, HeroClass heroClass, boolean player) {
 		
 		if(heroClass.equals(HeroClass.TANK)) {
 			health = 1000;
@@ -38,7 +41,7 @@ public class Character extends Hero {
 			damage = 100;
 		}
 		
-		Character ch = new Character(team, name, heroClass, health, mana, damage, player);
+		Character ch = new Character(id, team, name, heroClass, health, mana, damage, player);
 		Hero.listOfHeroes.add(ch);
 		
 		return ch;
@@ -64,5 +67,13 @@ public class Character extends Hero {
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
