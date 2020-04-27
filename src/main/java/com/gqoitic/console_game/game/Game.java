@@ -10,7 +10,6 @@ import com.gqoitic.console_game.characters.Hero;
 import com.gqoitic.console_game.characters.HeroClass;
 import com.gqoitic.console_game.characters.Team;
 import com.gqoitic.console_game.characters.Character;
-import com.sun.prism.paint.Color;
 
 public class Game {
 	private Scanner scanner = new Scanner(System.in);
@@ -33,19 +32,28 @@ public class Game {
 	
 	Character player;
 	
-	void gameProcess() {
+	public void gameProcess() {
+		beginningOfTheGame();
+		
 		boolean process = true;
 		
 		while(process) {
-			for(Hero movingHero : Hero.listOfHeroes) {
+			for(Character movingHero : Hero.listOfHeroes) {
 				if(Hero.listOfHeroes.indexOf(movingHero) == 0) increaseTurn();
 				
-				// ... (checking if player or bot etc...)
+				if(!movingHero.isAlive()) continue;
+				
+				if(movingHero.isPlayer()) {
+					attackById(movingHero);
+				} else {
+					attackRandom(movingHero);
+				}
+				
 			}
 		}
 	}
 	
-	public void beginningOfTheGame() {
+	void beginningOfTheGame() {
 		// intro
 
 		name      = choosingName();
@@ -188,12 +196,49 @@ public class Game {
 		return Hero.listOfHeroes.get(randomNumber);
 	}
 
-	private void atack(Character attacker, Character attacked) {
+	private void attack(Character attacker, Character attacked) {
 		attacked.setHealth(attacked.getHealth() - attacked.getDamage());
 		
 		if (attacked.getHealth() <= 0) {
 			attacked.setAlive(false);
+			System.out.printf("%s killed %s!%n", attacker.getName(), attacked.getName());
+		} else {
+			System.out.printf("%s attacked %s!%n, %s is now %dhp", 
+					attacker.getName(), 
+					attacked.getName(), 
+					attacked.getName(), 
+					attacked.getHealth());
 		}
+		
+	}
+	
+	private Character selectPlayer(int id) {
+		return Hero.listOfHeroes.get(id);
+	}
+	
+	private void attackById(Character attacker) {
+		
+		System.out.println("\n===============List of all players===============\n");
+		
+		printAllCharacters();
+		
+		System.out.println("Enter id of player you want to attack: ");
+		int input = scanner.nextInt();
+		
+		Character selectedPlayer = selectPlayer(input);
+		selectedPlayer.setHealth(selectedPlayer.getHealth() - attacker.getDamage());
+		
+	}
+	
+	private void attackRandom(Character attacker) {
+		
+		Character randomCharacter = getRandomCharacter();
+		
+		while(attacker.getTeam().equals(randomCharacter.getTeam())) {
+			randomCharacter = getRandomCharacter();
+		}
+		
+		attack(attacker, randomCharacter);
 	}
 	
 }

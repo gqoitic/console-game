@@ -7,7 +7,7 @@ public class Application {
 	private static Game launcher = new Game();
 	
 	public static void main(String[] args) {
-		launcher.beginningOfTheGame();
+		launcher.gameProcess();
 	}
 
 }
