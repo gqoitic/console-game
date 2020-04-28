@@ -1,7 +1,5 @@
 package com.gqoitic.console_game.game;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -46,6 +44,13 @@ public class Game {
 				if(movingHero.isPlayer()) {
 					attackById(movingHero);
 				} else {
+					
+					try{
+						Thread.sleep(1000);
+					} catch(Exception ex) {
+						ex.getMessage();
+					}
+					
 					attackRandom(movingHero);
 				}
 				
@@ -67,10 +72,10 @@ public class Game {
 		// adds [team] to the beginning of name
 		changePlayerName();
 
+		printPlayer();
+		
 		// creating other 9 players (bots)
 		createBots();
-		
-		printAllCharacters();
 	}
 	
 	private void changePlayerName() {
@@ -171,7 +176,6 @@ public class Game {
 	}
 	
 	private void createBots() {
-		HeroClass heroClass;
 		
 		for (; blueTracker > 0; blueTracker--) {
 			Character.create(id++, Team.BLUE, "[BLUE]BOT#" + blueTracker, getRandomHeroClass(), false);
@@ -184,10 +188,23 @@ public class Game {
 	
 	private void printAllCharacters() {
 		for(Character character : Hero.listOfHeroes) {
-			System.out.printf("%d) (%dhp) %s [%s]%n", character.getId(),
-											  character.getHealth(),
-											  character.getName(),
-											  character.getHeroClass());
+			if(character.getTeam().equals(Team.BLUE) && character.isAlive()) {
+				System.out.printf("%d) (%dhp) %s [%s]%n", character.getId(),
+												  character.getHealth(),
+												  character.getName(),
+												  character.getHeroClass());
+			}
+		}
+		
+		System.out.println();
+		
+		for(Character character : Hero.listOfHeroes) {
+			if(character.getTeam().equals(Team.RED) && character.isAlive()) {
+				System.out.printf("%d) (%dhp) %s [%s]%n", character.getId(),
+												  character.getHealth(),
+												  character.getName(),
+												  character.getHeroClass());
+			}
 		}
 	}
 	
@@ -212,11 +229,10 @@ public class Game {
 			
 			System.out.printf("%s killed %s!%n", attacker.getName(), attacked.getName());
 		} else {
-			System.out.printf("%s attacked %s!%n, %s is now %dhp", 
+			System.out.printf("%s attacked %s! (-%d)%n", 
 					attacker.getName(), 
-					attacked.getName(), 
-					attacked.getName(), 
-					attacked.getHealth());
+					attacked.getName(),
+					attacker.getDamage());
 		}
 		
 	}
@@ -231,11 +247,26 @@ public class Game {
 		
 		printAllCharacters();
 		
-		System.out.println("Enter id of player you want to attack: ");
-		int input = scanner.nextInt();
+		System.out.println("\n=================================================\n");
 		
-		Character selectedPlayer = selectPlayer(input);
+		System.out.print("\nEnter id of player you want to attack: ");
+		int input = scanner.nextInt();
+		System.out.println();
+		
+		Character selectedPlayer = selectPlayer(--input);
 		selectedPlayer.setHealth(selectedPlayer.getHealth() - attacker.getDamage());
+		
+		if(selectedPlayer.isAlive()) {
+			System.out.printf("%nYou attacked: %s [%s], he is now %dhp(-%d)%n%n",
+					selectedPlayer.getName(),
+					selectedPlayer.getHeroClass(),
+					selectedPlayer.getHealth(),
+					attacker.getDamage());
+		} else if(!selectedPlayer.isAlive()){
+			System.out.printf("%nYou killed: %s [%s]!%n%n",
+					selectedPlayer.getName(),
+					selectedPlayer.getClass());
+		}
 		
 	}
 	
@@ -248,6 +279,19 @@ public class Game {
 		}
 		
 		attack(attacker, randomCharacter);
+	}
+	
+	private void printPlayer() {
+		for(Character checking : Hero.listOfHeroes) {
+			
+			if(checking.isPlayer()) {
+		
+				System.out.printf("%nYour hero: (%dhp) %s [%s]%n", 
+						checking.getHealth(),
+						checking.getName(),
+						checking.getHeroClass());
+			}
+		}
 	}
 	
 	private boolean isEnd() {
