@@ -49,6 +49,8 @@ public class Game {
 					attackRandom(movingHero);
 				}
 				
+				if(isEnd()) process = false;
+				
 			}
 		}
 	}
@@ -201,6 +203,13 @@ public class Game {
 		
 		if (attacked.getHealth() <= 0) {
 			attacked.setAlive(false);
+			
+			if(attacked.getTeam().equals(Team.BLUE)) {
+				blueTracker++;
+			} else if(attacked.getTeam().equals(Team.RED)) {
+				redTracker++;
+			}
+			
 			System.out.printf("%s killed %s!%n", attacker.getName(), attacked.getName());
 		} else {
 			System.out.printf("%s attacked %s!%n, %s is now %dhp", 
@@ -241,4 +250,18 @@ public class Game {
 		attack(attacker, randomCharacter);
 	}
 	
+	private boolean isEnd() {
+		if(blueTracker == 5) {
+			System.out.println("RED TEAM WINS!");
+			return true;
+		} else if(redTracker == 5) {
+			System.out.println("BLUE TEAM WINS!");
+			return true;
+		} else if(blueTracker == 5 && redTracker == 5) {
+			System.out.println("DRAW!");
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
