@@ -189,10 +189,11 @@ public class Game {
 	private void printAllCharacters() {
 		for(Character character : Hero.listOfHeroes) {
 			if(character.getTeam().equals(Team.BLUE) && character.isAlive()) {
-				System.out.printf("%d) (%dhp) %s [%s]%n", character.getId(),
-												  character.getHealth(),
-												  character.getName(),
-												  character.getHeroClass());
+				System.out.printf("%d) (%dhp) %s [%s]%n", 
+						character.getId(),
+						character.getHealth(),
+						character.getName(),
+						character.getHeroClass());
 			}
 		}
 		
@@ -200,10 +201,11 @@ public class Game {
 		
 		for(Character character : Hero.listOfHeroes) {
 			if(character.getTeam().equals(Team.RED) && character.isAlive()) {
-				System.out.printf("%d) (%dhp) %s [%s]%n", character.getId(),
-												  character.getHealth(),
-												  character.getName(),
-												  character.getHeroClass());
+				System.out.printf("%d) (%dhp) %s [%s]%n", 
+						character.getId(),
+						character.getHealth(),
+						character.getName(),
+						character.getHeroClass());
 			}
 		}
 	}
