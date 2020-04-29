@@ -37,7 +37,14 @@ public class Game {
 		
 		while(process) {
 			for(Character movingHero : Hero.listOfHeroes) {
-				if(Hero.listOfHeroes.indexOf(movingHero) == 0) increaseTurn();
+				if(Hero.listOfHeroes.indexOf(movingHero) == 0) {
+					
+					if(!player.isAlive()) {
+						System.out.printf("%n==TURN: [%d]==%n", turn);
+					}
+					
+					increaseTurn();
+				}
 				
 				if(!movingHero.isAlive()) continue;
 				
@@ -54,7 +61,11 @@ public class Game {
 					attackRandom(movingHero);
 				}
 				
-				if(isEnd()) process = false;
+				if(isEnd()) {
+					process = false;
+					showTurnsAtTheEnd();
+					break;
+				}
 				
 			}
 		}
@@ -87,7 +98,7 @@ public class Game {
 	}
 	
 	private String choosingName() {
-		System.out.print("Enter your name: ");
+		System.out.print("\nEnter your name: ");
 		name = scanner.nextLine();
 		
 		if(Objects.isNull(name) || name.isEmpty()) {
@@ -245,11 +256,12 @@ public class Game {
 	
 	private void attackById(Character attacker) {
 		
-		System.out.println("\n===============List of all players===============\n");
+		System.out.print("\n===============List of all players===============");
+		System.out.printf(" [TURN: [%d]]%n%n", turn);
 		
 		printAllCharacters();
 		
-		System.out.println("\n=================================================\n");
+		System.out.println("\n=============================================================\n");
 		
 		System.out.print("\nEnter id of player you want to attack: ");
 		int input = scanner.nextInt();
@@ -258,6 +270,8 @@ public class Game {
 		Character selectedPlayer = selectPlayer(--input);
 		selectedPlayer.setHealth(selectedPlayer.getHealth() - attacker.getDamage());
 		
+		if(selectedPlayer.getHealth() <= 0) selectedPlayer.setAlive(false);
+		
 		if(selectedPlayer.isAlive()) {
 			System.out.printf("%nYou attacked: %s [%s], he is now %dhp(-%d)%n%n",
 					selectedPlayer.getName(),
@@ -265,9 +279,13 @@ public class Game {
 					selectedPlayer.getHealth(),
 					attacker.getDamage());
 		} else if(!selectedPlayer.isAlive()){
+			
+			if(selectedPlayer.getTeam().equals(Team.BLUE)) blueTracker++;
+			else if(selectedPlayer.getTeam().equals(Team.RED)) redTracker++;
+			
 			System.out.printf("%nYou killed: %s [%s]!%n%n",
 					selectedPlayer.getName(),
-					selectedPlayer.getClass());
+					selectedPlayer.getHeroClass());
 		}
 		
 	}
@@ -276,7 +294,7 @@ public class Game {
 		
 		Character randomCharacter = getRandomCharacter();
 		
-		while(attacker.getTeam().equals(randomCharacter.getTeam())) {
+		while(attacker.getTeam().equals(randomCharacter.getTeam()) || !randomCharacter.isAlive()) {
 			randomCharacter = getRandomCharacter();
 		}
 		
@@ -298,16 +316,35 @@ public class Game {
 	
 	private boolean isEnd() {
 		if(blueTracker == 5) {
-			System.out.println("RED TEAM WINS!");
+			
+			System.out.println("\n**************");
+			for(int a = 0; a <= 3; a++)
+				System.out.println("RED TEAM WINS!");
+			System.out.println("**************");
+			
 			return true;
 		} else if(redTracker == 5) {
-			System.out.println("BLUE TEAM WINS!");
+			
+			System.out.println("\n***************");
+			for(int a = 0; a <= 3; a++)
+				System.out.println("BLUE TEAM WINS!");
+			System.out.println("***************");
+			
 			return true;
 		} else if(blueTracker == 5 && redTracker == 5) {
-			System.out.println("DRAW!");
+			
+			System.out.println("\n*****");
+			for(int a = 0; a <= 3; a++)
+				System.out.println("DRAW!");
+			System.out.println("*****");
+			
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	private void showTurnsAtTheEnd() {
+		System.out.printf("%nThe game ended in %d turns!%n", turn);
 	}
 }
