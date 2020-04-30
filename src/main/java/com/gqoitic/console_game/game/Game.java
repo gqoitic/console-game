@@ -108,7 +108,7 @@ public class Game {
 	}
 	
 	private Team choosingTeam() {
-		System.out.print("Choose your team:\n"
+		System.out.print("\nChoose your team:\n"
 				+ "[1]Red\n"
 				+ "[2]Blue\n"
 				+ "[3]Random\n\n>>");
@@ -137,11 +137,18 @@ public class Game {
 	}
 	
 	private HeroClass choosingHeroClass() {
-		System.out.print("Choose your hero:\n"
-				+ "[1]Tank\n"
-				+ "[2]Healer\n"
-				+ "[3]Killer\n"
-				+ "[4]Mage\n\n>>");
+		System.out.printf("\nChoose your hero:%n%n"
+				+ "=========================================%n"
+				+ "[1]Tank   | Health: [%d], Damage: [%d]%n"
+				+ "[2]Healer | Health: [%d],  Damage: [%d]%n"
+				+ "[3]Killer | Health: [%d],  Damage: [%d]%n"
+				+ "[4]Mage   | Health: [%d],  Damage: [%d]%n"
+				+ "=========================================%n%n>>",
+				
+				HeroClass.TANK.getHealth(), HeroClass.TANK.getDamage(),
+				HeroClass.HEALER.getHealth(), HeroClass.HEALER.getDamage(),
+				HeroClass.KILLER.getHealth(), HeroClass.KILLER.getDamage(),
+				HeroClass.MAGE.getHealth(), HeroClass.MAGE.getDamage());
 		
 		choice = scanner.nextInt();
 		
@@ -200,7 +207,7 @@ public class Game {
 	private void printAllCharacters() {
 		for(Character character : Hero.listOfHeroes) {
 			if(character.getTeam().equals(Team.BLUE) && character.isAlive()) {
-				System.out.printf("%d) (%dhp) %s [%s]%n", 
+				System.out.printf("[%d] (%dhp) %s [%s]%n", 
 						character.getId(),
 						character.getHealth(),
 						character.getName(),
@@ -212,7 +219,7 @@ public class Game {
 		
 		for(Character character : Hero.listOfHeroes) {
 			if(character.getTeam().equals(Team.RED) && character.isAlive()) {
-				System.out.printf("%d) (%dhp) %s [%s]%n", 
+				System.out.printf("[%d] (%dhp) %s [%s]%n", 
 						character.getId(),
 						character.getHealth(),
 						character.getName(),
@@ -345,6 +352,6 @@ public class Game {
 	}
 	
 	private void showTurnsAtTheEnd() {
-		System.out.printf("%nThe game ended in %d turns!%n", turn);
+		System.out.printf("%nThe game ended in %d turns!%n", --turn);
 	}
 }

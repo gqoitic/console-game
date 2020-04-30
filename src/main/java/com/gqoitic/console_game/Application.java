@@ -1,3 +1,11 @@
+/**
+ * 
+ * 	github.com/gqoitic
+ * 	github.com/gqoitic
+ * 	github.com/gqoitic
+ * 
+ * */
+
 package com.gqoitic.console_game;
 
 import com.gqoitic.console_game.game.Game;
