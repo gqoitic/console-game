@@ -1,5 +1,6 @@
 package com.gqoitic.console_game.game;
 
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -49,7 +50,11 @@ public class Game {
 				if(!movingHero.isAlive()) continue;
 				
 				if(movingHero.isPlayer()) {
-					attackById(movingHero);
+					try {
+						attackById(movingHero);
+					} catch(IndexOutOfBoundsException ex) {
+						System.out.println("There is no player with such id, so you attacked air!");
+					}
 				} else {
 					
 					try{
@@ -236,7 +241,7 @@ public class Game {
 	}
 
 	private void attack(Character attacker, Character attacked) {
-		attacked.setHealth(attacked.getHealth() - attacked.getDamage());
+		attacked.setHealth(attacked.getHealth() - attacker.getDamage());
 		
 		if (attacked.getHealth() <= 0) {
 			attacked.setAlive(false);
@@ -248,6 +253,17 @@ public class Game {
 			}
 			
 			System.out.printf("%s killed %s!%n", attacker.getName(), attacked.getName());
+			
+			int randomNumber = random.nextInt(20);
+			if(randomNumber == 4) {
+				attacker.setHealth(attacker.getHealth() - attacked.getDamage());
+				
+				System.out.printf("%s managed to attack %s before death! (-%d)%n",
+						attacked.getName(),
+						attacker.getName(),
+						attacked.getDamage());
+			}
+			
 		} else {
 			System.out.printf("%s attacked %s! (-%d)%n", 
 					attacker.getName(), 
@@ -261,6 +277,20 @@ public class Game {
 		return Hero.listOfHeroes.get(id);
 	}
 	
+	
+	private int inputChecker() {
+		System.out.print("\nEnter id of player you want to attack: ");
+		try{
+			int input = scanner.nextInt();
+			return input;
+		} catch(InputMismatchException ex) {
+			System.out.println("You must enter the number!");
+			scanner.nextLine();
+			inputChecker();
+		}
+		return 0;
+	}
+	
 	private void attackById(Character attacker) {
 		
 		System.out.print("\n===============List of all players===============");
@@ -270,8 +300,10 @@ public class Game {
 		
 		System.out.println("\n=============================================================\n");
 		
-		System.out.print("\nEnter id of player you want to attack: ");
-		int input = scanner.nextInt();
+		//System.out.print("\nEnter id of player you want to attack: ");
+		
+		int input = inputChecker();
+		
 		System.out.println();
 		
 		Character selectedPlayer = selectPlayer(--input);
@@ -293,6 +325,16 @@ public class Game {
 			System.out.printf("%nYou killed: %s [%s]!%n%n",
 					selectedPlayer.getName(),
 					selectedPlayer.getHeroClass());
+			
+			int randomNumber = random.nextInt(20);
+			if(randomNumber == 4) {
+				attacker.setHealth(attacker.getHealth() - selectedPlayer.getDamage());
+				
+				System.out.printf("%s managed to attack %s before death! (-%d)%n",
+						selectedPlayer.getName(),
+						attacker.getName(),
+						selectedPlayer.getDamage());
+			}
 		}
 		
 	}
