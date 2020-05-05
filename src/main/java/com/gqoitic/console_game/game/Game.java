@@ -1,6 +1,5 @@
 package com.gqoitic.console_game.game;
 
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Random;
