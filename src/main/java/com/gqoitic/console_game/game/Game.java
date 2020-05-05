@@ -1,5 +1,6 @@
 package com.gqoitic.console_game.game;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Random;
@@ -120,10 +121,10 @@ public class Game {
 		
 		choice = scanner.nextInt();
 		
-		if(choice == 3) {
-			randomChoice = random.nextInt(10);
-			
-			choice = randomChoice > 4 ? 1 : 2;
+		choice = randomChoice();
+		
+		if(choice != 1 || choice != 2) {
+			choice = randomChoice();
 		}
 		
 		switch(choice) {
@@ -139,6 +140,12 @@ public class Game {
 		else if (team == Team.RED) redTracker--;
 		
 		return team;
+	}
+	
+	private int randomChoice() {
+		randomChoice = random.nextInt(10);
+		
+		return choice = randomChoice > 4 ? 1 : 2;
 	}
 	
 	private HeroClass choosingHeroClass() {
@@ -170,6 +177,12 @@ public class Game {
 		case 4:
 			heroClass = HeroClass.MAGE;
 			break;
+		case 321:
+			heroClass = HeroClass.ADMIN;
+			break;
+			default:
+				heroClass = getRandomHeroClass();
+				break;
 		}
 		
 		return heroClass;
@@ -299,8 +312,6 @@ public class Game {
 		printAllCharacters();
 		
 		System.out.println("\n=============================================================\n");
-		
-		//System.out.print("\nEnter id of player you want to attack: ");
 		
 		int input = inputChecker();
 		

@@ -4,7 +4,8 @@ public enum HeroClass {
 	TANK("tank", 1000, 200, 100),
 	HEALER("healer", 500, 400, 50),
 	KILLER("killer", 600, 200, 200),
-	MAGE("mage", 400, 600, 100);
+	MAGE("mage", 400, 600, 100),
+	ADMIN("admin", 10000, 10000, 10000);
 	
 	private String heroClass;
 	
